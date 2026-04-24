@@ -7,5 +7,5 @@
    ============================================================ */
 
 const CONFIG = {
-  API_BASE: '',   // <-- CHANGE THIS to your backend URL if deployed
+  API_BASE: 'http://localhost:3000',
 };
