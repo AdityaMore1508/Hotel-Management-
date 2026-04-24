@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Grand HMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🏨</div>
+        <h1>Grand<span style="color:var(--gold);font-style:italic;">HMS</span></h1>
+        <p>Hotel Management System</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Sign in as</label>
+        <div class="role-selector">
+          <label class="role-option">
+            <input type="radio" name="role" value="guest" checked />
+            <span class="role-option-label"><span class="role-icon">🛎</span>Guest</span>
+          </label>
+          <label class="role-option">
+            <input type="radio" name="role" value="admin" />
+            <span class="role-option-label"><span class="role-icon">🔑</span>Admin</span>
+          </label>
+        </div>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="you@example.com" required />
+          <div class="form-error" id="emailErr">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required />
+          <div class="form-error" id="passwordErr">Password is required.</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg mt-2" id="loginBtn">
+          <span id="loginBtnText">Sign In</span>
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+      <p class="text-center" style="font-size:.875rem;color:var(--text-muted);">
+        Don't have an account? <a href="register.html" class="text-gold">Create one</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    redirectIfLoggedIn();
+
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      document.querySelectorAll('.form-error').forEach(function (el) { el.classList.remove('visible'); });
+
+      var email    = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value.trim();
+      var role     = document.querySelector('input[name="role"]:checked').value;
+      var loginBtn = document.getElementById('loginBtn');
+      var btnText  = document.getElementById('loginBtnText');
+
+      var valid = true;
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('emailErr').classList.add('visible'); valid = false; }
+      if (!password) { document.getElementById('passwordErr').classList.add('visible'); valid = false; }
+      if (!valid) return;
+
+      loginBtn.disabled = true; btnText.textContent = 'Signing in…';
+      try {
+        var res  = await fetch(API_BASE + '/login', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, role }) });
+        var data = await res.json();
+        if (!res.ok) { toastError('Login Failed', data.message || 'Invalid credentials.'); }
+        else {
+          setUser({ id: data.user?.id || data.id, name: data.user?.name || data.name, email: data.user?.email || email, role: data.user?.role || data.role || role });
+          toastSuccess('Welcome back!', 'Signed in as ' + role + '.');
+          setTimeout(function () { window.location.href = 'index.html'; }, 600);
+        }
+      } catch (err) { toastError('Connection Error', 'Cannot reach server. Make sure your backend is running.'); }
+      finally { loginBtn.disabled = false; btnText.textContent = 'Sign In'; }
+    });
+  </script>
+
+</body>
+</html>

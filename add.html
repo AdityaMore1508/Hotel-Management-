@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Room — Grand HMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Room <span class="accent">Details</span></h1>
+      <p class="page-subtitle">Fill in the information below to add or edit a room</p>
+      <div class="page-divider"></div>
+    </div>
+    <div class="container">
+      <div class="form-page">
+
+        <div class="form-card">
+          <h2 class="form-card-title" id="formTitle">➕ Add Room</h2>
+          <form id="addRoomForm" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="roomNumber" class="form-label">Room Number *</label>
+                <input type="text" id="roomNumber" class="form-control" placeholder="e.g. 101, A-203" required />
+                <div class="form-error" id="roomNumberErr">Room number is required.</div>
+              </div>
+              <div class="form-group">
+                <label for="roomType" class="form-label">Room Type *</label>
+                <input type="text" id="roomType" class="form-control" placeholder="e.g. Deluxe, Suite" list="roomTypeList" required />
+                <datalist id="roomTypeList">
+                  <option value="Standard"><option value="Deluxe"><option value="Suite">
+                  <option value="Executive Suite"><option value="Presidential Suite">
+                  <option value="Twin"><option value="Single"><option value="Family Room">
+                </datalist>
+                <div class="form-error" id="roomTypeErr">Room type is required.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="roomDescription" class="form-label">Description</label>
+              <textarea id="roomDescription" class="form-control" placeholder="Brief description of amenities, view, etc." rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="roomPrice" class="form-label">Price per Night (₹) *</label>
+                <input type="number" id="roomPrice" class="form-control" placeholder="e.g. 2500" min="0" step="0.01" required />
+                <div class="form-error" id="roomPriceErr">Enter a valid price.</div>
+              </div>
+              <div class="form-group">
+                <label for="roomAvailable" class="form-label">Availability</label>
+                <select id="roomAvailable" class="form-control">
+                  <option value="1">✓ Available</option>
+                  <option value="0">✕ Not Available</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="roomImage" class="form-label">Image URL</label>
+              <input type="url" id="roomImage" class="form-control" placeholder="https://example.com/room.jpg" />
+              <div class="form-hint">Paste a direct image URL. The preview on the right updates live.</div>
+            </div>
+
+            <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;">
+              <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                <span id="submitBtnText">Add Room</span>
+              </button>
+              <a href="rooms.html" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="image-preview-card">
+          <div class="preview-header">Image Preview</div>
+          <img id="imagePreview" src="" alt="Preview" style="display:none;" />
+          <div class="image-placeholder" id="imagePlaceholder">
+            <span class="ph-icon">🖼</span>
+            <span>Preview appears here</span>
+            <span style="font-size:.75rem;">Enter an image URL above</span>
+          </div>
+          <div style="padding:1rem 1.25rem;border-top:1px solid var(--border);">
+            <div style="font-size:.8rem;color:var(--text-muted);line-height:1.6;">
+              <strong style="color:var(--ivory-dim);">Tips:</strong><br/>
+              Use direct image URLs ending in .jpg, .png, .webp<br/>
+              Recommended size: 800×500px landscape ratio.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/add.js"></script>
+
+</body>
+</html>

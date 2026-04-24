@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Grand HMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🏨</div>
+        <h1>Grand<span style="color:var(--gold);font-style:italic;">HMS</span></h1>
+        <p>Create your account</p>
+      </div>
+
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="name" class="form-label">Full Name</label>
+          <input type="text" id="name" class="form-control" placeholder="John Smith" required />
+          <div class="form-error" id="nameErr">Name is required.</div>
+        </div>
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="you@example.com" required />
+          <div class="form-error" id="emailErr">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Min. 6 characters" required />
+          <div class="form-error" id="passwordErr">Password must be at least 6 characters.</div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" id="confirmPassword" class="form-control" placeholder="Repeat password" required />
+          <div class="form-error" id="confirmErr">Passwords do not match.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Type</label>
+          <div class="role-selector">
+            <label class="role-option">
+              <input type="radio" name="role" value="guest" checked />
+              <span class="role-option-label"><span class="role-icon">🛎</span>Guest</span>
+            </label>
+            <label class="role-option">
+              <input type="radio" name="role" value="admin" />
+              <span class="role-option-label"><span class="role-icon">🔑</span>Admin</span>
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg mt-2" id="registerBtn">
+          <span id="registerBtnText">Create Account</span>
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+      <p class="text-center" style="font-size:.875rem;color:var(--text-muted);">
+        Already have an account? <a href="login.html" class="text-gold">Sign in</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    redirectIfLoggedIn();
+
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      document.querySelectorAll('.form-error').forEach(function (el) { el.classList.remove('visible'); });
+
+      var name     = document.getElementById('name').value.trim();
+      var email    = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value;
+      var confirm  = document.getElementById('confirmPassword').value;
+      var role     = document.querySelector('input[name="role"]:checked').value;
+      var regBtn   = document.getElementById('registerBtn');
+      var btnText  = document.getElementById('registerBtnText');
+
+      var valid = true;
+      if (!name)   { document.getElementById('nameErr').classList.add('visible'); valid = false; }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('emailErr').classList.add('visible'); valid = false; }
+      if (!password || password.length < 6) { document.getElementById('passwordErr').classList.add('visible'); valid = false; }
+      if (password !== confirm) { document.getElementById('confirmErr').classList.add('visible'); valid = false; }
+      if (!valid) return;
+
+      regBtn.disabled = true; btnText.textContent = 'Creating account…';
+      try {
+        var res  = await fetch(API_BASE + '/register', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password, role }) });
+        var data = await res.json();
+        if (!res.ok) { toastError('Registration Failed', data.message || 'Could not create account.'); }
+        else { toastSuccess('Account Created!', 'You can now sign in.'); setTimeout(function () { window.location.href = 'login.html'; }, 1200); }
+      } catch (err) { toastError('Connection Error', 'Cannot reach server.'); }
+      finally { regBtn.disabled = false; btnText.textContent = 'Create Account'; }
+    });
+  </script>
+
+</body>
+</html>

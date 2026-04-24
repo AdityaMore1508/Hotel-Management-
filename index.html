@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Grand HMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Room <span class="accent">Dashboard</span></h1>
+      <p class="page-subtitle">Browse, search, and manage hotel rooms</p>
+      <div class="page-divider"></div>
+    </div>
+    <div class="container">
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon gold">🏨</div>
+          <div class="stat-info"><div class="stat-value" id="statTotal">—</div><div class="stat-label">Total Rooms</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">✓</div>
+          <div class="stat-info"><div class="stat-value" id="statAvailable">—</div><div class="stat-label">Available</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">✕</div>
+          <div class="stat-info"><div class="stat-value" id="statBooked">—</div><div class="stat-label">Booked</div></div>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search by room number or type…" />
+        </div>
+        <select id="filterType"  class="filter-select"><option value="">All Types</option></select>
+        <select id="filterAvail" class="filter-select">
+          <option value="">All Status</option>
+          <option value="available">Available</option>
+          <option value="booked">Booked</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" onclick="resetFilters()">Reset</button>
+        <div id="adminAddBtn" style="display:none;">
+          <a href="add.html" class="btn btn-primary btn-sm">➕ Add Room</a>
+        </div>
+      </div>
+
+      <div class="rooms-grid" id="roomsGrid"></div>
+
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Rooms — Grand HMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Room <span class="accent">Management</span></h1>
+      <p class="page-subtitle">View, search, edit and delete all hotel rooms</p>
+      <div class="page-divider"></div>
+    </div>
+    <div class="container">
+
+      <div class="search-bar" style="margin-bottom:1.5rem;">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="tableSearch" class="search-input" placeholder="Search by room number or type…" />
+        </div>
+        <select id="tableTypeFilter"  class="filter-select"><option value="">All Types</option></select>
+        <select id="tableAvailFilter" class="filter-select">
+          <option value="">All Status</option>
+          <option value="available">Available</option>
+          <option value="booked">Booked</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" onclick="resetTableFilters()">Reset</button>
+        <a href="add.html" class="btn btn-primary btn-sm">➕ Add Room</a>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">All Rooms</span>
+          <span style="font-size:.8rem;color:var(--text-muted);"><span id="roomCount">0</span> rooms</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th><th>Room No.</th><th>Type</th><th>Description</th><th>Price</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="roomsTableBody">
+              <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--text-muted);">
+                <div class="spinner" style="margin:0 auto 1rem;"></div>Loading rooms…
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/rooms.js"></script>
+
+</body>
+</html>
